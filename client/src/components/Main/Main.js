@@ -20,19 +20,21 @@ class Main extends Component {
         .then(response => {
             console.log(response)
             console.log("Logged out, bye!");
-            this.setState({
-                validation: false,
-                user: ""
-            })
+            this.props.update();
         })
     }
 
     componentWillReceiveProps(nextProps) {
+        // makes sure that once there's any change in parent component app, props is promptly updated and views are changed
         this.setState(nextProps);
+    }
+
+    componentWillMount() {
+        this.props.update();
     }
       
     render() {
-        console.log("Main", this.state)
+        
         if (this.state.validation && this.state.user === "admin") {
         return (
             <div>

@@ -17,7 +17,8 @@ class LoginForm extends Component {
         }
     }
     
-    clickHandler(){
+    clickHandler(event){
+        event.preventDefault();
         console.log(`Sending post request to ${this.state.user}/sign_in`)
         let tempUser = this.state.user;
         tempUser = tempUser.slice(0, -1)
@@ -57,14 +58,16 @@ class LoginForm extends Component {
             return (
                 <div>
                     <h1>Login Page</h1>
-                    <p>Email: <input name="email" onChange={this.changeHandler} required></input></p>
-                    <p>Password: <input name="password" type="password" onChange={this.changeHandler} onKeyUp={this.enterHandler} required></input></p>
-                    <div>
-                        <input type="radio" name="user" value="staffs" onChange={this.changeHandler} checked="checked"/><small>Staff</small>
-                        <input type="radio" name="user" value="admins" onChange={this.changeHandler}/><small>Admin</small>
-                    </div>
-                    <p>{this.state.error}</p>
-                    <button onClick={this.clickHandler}>Submit</button>
+                    <form>
+                        <p>Email: <input name="email" onChange={this.changeHandler} required></input></p>
+                        <p>Password: <input name="password" type="password" onChange={this.changeHandler} onKeyUp={this.enterHandler} required></input></p>
+                        <div>
+                            <input type="radio" name="user" value="staffs" onChange={this.changeHandler} checked="checked"/><small>Staff</small>
+                            <input type="radio" name="user" value="admins" onChange={this.changeHandler}/><small>Admin</small>
+                        </div>
+                        <p>{this.state.error}</p>
+                        <button onClick={this.clickHandler}>Submit</button>
+                    </form>
                     
                     <h4><NavLink to='/'>Back</NavLink></h4>
                 </div>

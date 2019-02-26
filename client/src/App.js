@@ -13,10 +13,15 @@ class App extends Component {
       validation: false,
       user: ""
     };
+    this.update = this.update.bind(this);
   }
 
   componentDidMount() {
-    // check if either user or admin is logged in
+    this.update();
+  }
+  
+  update(){
+  // check if either user or admin is logged in
     Axios.get('/admin/validate')
     .then(response => {
       console.log(response)
@@ -25,7 +30,7 @@ class App extends Component {
     })
     .catch(error => {
       console.log(error)
-  
+
       Axios.get('/staff/validate')
       .then(response =>{
           console.log(response);
@@ -49,7 +54,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/login" component={LoginForm} />
 						<Route exact path="/sign_up" component={StaffOrAdminSignUp} />
-						<Route path="/" render={() => <Main validation={this.state.validation}  user={this.state.user} />} />
+						<Route path="/" render={() => <Main validation={this.state.validation}  user={this.state.user} update={this.update} />} />
 					</Switch>
 				</BrowserRouter>
       </div>
