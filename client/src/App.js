@@ -21,7 +21,7 @@ class App extends Component {
     .then(response => {
       console.log(response)
       console.log("Admin is logged in.")
-        this.setState({validation: true, user: 'admin',path:"/admin/dashboard"});
+      this.setState({validation: true, user: 'admin'});
     })
     .catch(error => {
       console.log(error)
@@ -41,6 +41,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("App", this.state)
     return (
       <div className="App">
       <h3>Hello, I'm just a placeholder.</h3>

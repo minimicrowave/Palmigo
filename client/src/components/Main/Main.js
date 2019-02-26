@@ -5,17 +5,16 @@ import Branches from '../AdminBranches/Branches'
 import Branch from '../AdminBranches/Branch'
 
 class Main extends Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
-            validation: false,
-            user: ""
+            validation: props.validation,
+            user: props.user
           };
         this.logoutHandler = this.logoutHandler.bind(this);
       }
       
     logoutHandler() {
-        let reactThis = this;
         let tempLink = this.props.user + 's';
         Axios.delete(`/${tempLink}/sign_out`)
         .then(response => {
@@ -28,14 +27,12 @@ class Main extends Component {
         })
     }
 
-    componentDidMount() {
-        this.setState({
-            validation: this.props.validation,
-            user: this.props.user
-        })
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps);
     }
       
     render() {
+        console.log("Main", this.state)
         if (this.state.validation && this.state.user === "admin") {
         return (
             <div>
