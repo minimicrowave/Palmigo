@@ -63,7 +63,7 @@ class LoginForm extends Component {
                         <input type="radio" name="user" value="staffs" onChange={this.changeHandler} checked="checked"/><small>Staff</small>
                         <input type="radio" name="user" value="admins" onChange={this.changeHandler}/><small>Admin</small>
                     </div>
-                    <p>{this.state.error }</p>
+                    <p>{this.state.error}</p>
                     <button onClick={this.clickHandler}>Submit</button>
                     
                     <h4><NavLink to='/'>Back</NavLink></h4>
