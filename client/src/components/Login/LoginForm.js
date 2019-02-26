@@ -18,24 +18,27 @@ class LoginForm extends Component {
     }
     
     clickHandler(event){
-        event.preventDefault();
-        console.log(`Sending post request to ${this.state.user}/sign_in`)
-        let tempUser = this.state.user;
-        tempUser = tempUser.slice(0, -1)
-
-        axios.post(`/${this.state.user}/sign_in`, {[tempUser]:{
-            email: this.state.email,
-            password: this.state.password
-        }})
-        .then(response => {
-            console.log(response)
-            this.setState({doRedirect: true})
-        })
-        .catch(error => {
-            console.log(error)
-            this.setState({doRedirect: false})
-            this.setState({error: "Invalid email or password. Please try again."});
-        })
+        if (!this.state.email || !this.state.password){
+            this.setState({error: 'Please do not leave any fields blank.'})
+        } else {
+            console.log(`Sending post request to ${this.state.user}/sign_in`)
+            let tempUser = this.state.user;
+            tempUser = tempUser.slice(0, -1)
+    
+            axios.post(`/${this.state.user}/sign_in`, {[tempUser]:{
+                email: this.state.email,
+                password: this.state.password
+            }})
+            .then(response => {
+                console.log(response)
+                this.setState({doRedirect: true})
+            })
+            .catch(error => {
+                console.log(error)
+                this.setState({doRedirect: false})
+                this.setState({error: "Invalid email or password. Please try again."});
+            })
+        }
     }
 
     changeHandler(event){
@@ -58,7 +61,6 @@ class LoginForm extends Component {
             return (
                 <div>
                     <h1>Login Page</h1>
-                    <form>
                         <p>Email: <input name="email" onChange={this.changeHandler} required></input></p>
                         <p>Password: <input name="password" type="password" onChange={this.changeHandler} onKeyUp={this.enterHandler} required></input></p>
                         <div>
@@ -67,7 +69,6 @@ class LoginForm extends Component {
                         </div>
                         <p>{this.state.error}</p>
                         <button onClick={this.clickHandler}>Submit</button>
-                    </form>
                     
                     <h4><NavLink to='/'>Back</NavLink></h4>
                 </div>

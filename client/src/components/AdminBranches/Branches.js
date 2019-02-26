@@ -16,7 +16,6 @@ class Branches extends Component {
     }
 
     componentDidMount(){
-        
         Axios.get('/admin_branches')
         .then(response => {
           console.log(response)
@@ -85,8 +84,24 @@ class NewBranch extends Component {
         }
     } 
 
-    clickHandler(event){
-        console.log("hi")
+    clickHandler(){
+        if (!this.state.branchName || !this.state.contactNo || !this.state.location){
+            this.setState({error: 'Please do not leave any fields blank.'})
+        } else {
+            Axios.post('/admin_branches', {
+                name: this.state.branchName,
+                contact: this.state.contactNo,
+                location: this.state.location
+            })
+            .then(response => {
+            console.log(response)
+            // this.setState({dataLoaded: true, data: response.data})
+            })
+            .catch(error => {
+            console.log("Data retrieval unsuccessul. \n", error)
+            this.setState({dataLoaded: false})
+            })
+            }
     }
 
     changeHandler(event){
@@ -101,14 +116,11 @@ class NewBranch extends Component {
         return(
             <div>
                 <h3>New Branch</h3>
-                <form>
                 <p>Branch Name: </p><input name="branchName" onChange={this.changeHandler} required/>
                 <p>Contact No: </p><input name="contactNo" type="number" onChange={this.changeHandler} required/>
                 <p>Location: </p><input name="location" onChange={this.changeHandler} required/>
-                <button onClick={this.clickHandler()}>Submit</button>
+                <button onClick={this.clickHandler}>Submit</button>
                 <p>{this.state.error}</p>
-
-                </form>
             </div>
         )
     }

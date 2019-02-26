@@ -18,40 +18,44 @@ class LoginForm extends Component {
     }
     
     clickHandler(){
-        console.log(`Sending post request to ${this.props.user}`)
-        let tempUser = this.props.user;
-        tempUser = tempUser.slice(0, -1).toLowerCase();
-
-        var params;
-        if (this.props.user === "Staffs") {
-           params = {
-               email: this.state.email,
-               password: this.state.password,
-            } 
+        if (!this.state.email || !this.state.password){
+            this.setState({error: 'Please do not leave any fields blank.'})
         } else {
-            params = {
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password
+            console.log(`Sending post request to ${this.props.user}`)
+            let tempUser = this.props.user;
+            tempUser = tempUser.slice(0, -1).toLowerCase();
+    
+            var params;
+            if (this.props.user === "Staffs") {
+               params = {
+                   email: this.state.email,
+                   password: this.state.password,
+                } 
+            } else {
+                params = {
+                    name: this.state.name,
+                    email: this.state.email,
+                    password: this.state.password
+                }
             }
-        }
-
-        axios.post(`/${this.props.user.toLowerCase()}`, {[tempUser]: params})
-        .then(response => {
-            console.log(response);
-            axios.post(`/${this.props.user.toLowerCase()}/sign_in`, {[tempUser]:{
-                email: this.state.email,
-                password: this.state.password
-            }})
+    
+            axios.post(`/${this.props.user.toLowerCase()}`, {[tempUser]: params})
             .then(response => {
-                console.log(response)
-                this.setState({doRedirect: true})
+                console.log(response);
+                axios.post(`/${this.props.user.toLowerCase()}/sign_in`, {[tempUser]:{
+                    email: this.state.email,
+                    password: this.state.password
+                }})
+                .then(response => {
+                    console.log(response)
+                    this.setState({doRedirect: true})
+                })
             })
-        })
-        .catch(error => {
-            console.log(error)
-            this.setState({error: "Email unavailable. Please try again.", doRedirect: false});
-        })
+            .catch(error => {
+                console.log(error)
+                this.setState({error: "Email unavailable. Please try again.", doRedirect: false});
+            })
+        }
     }
 
     changeHandler(event){
