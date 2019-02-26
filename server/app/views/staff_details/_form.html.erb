@@ -1,0 +1,37 @@
+<%= form_with(model: staff_detail, local: true) do |form| %>
+  <% if staff_detail.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(staff_detail.errors.count, "error") %> prohibited this staff_detail from being saved:</h2>
+
+      <ul>
+      <% staff_detail.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contact %>
+    <%= form.number_field :contact %>
+  </div>
+
+  <div class="field">
+    <%= form.label :job_title %>
+    <%= form.text_field :job_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :employment_type %>
+    <%= form.text_field :employment_type %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

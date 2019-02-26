@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shift: one
+  staff_details: one
+  absence: false
+  branch_match: false
+
+two:
+  shift: two
+  staff_details: two
+  absence: false
+  branch_match: false

@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Admin Branches</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Contact</th>
+      <th>Location</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @admin_branches.each do |admin_branch| %>
+      <tr>
+        <td><%= admin_branch.name %></td>
+        <td><%= admin_branch.contact %></td>
+        <td><%= admin_branch.location %></td>
+        <td><%= link_to 'Show', admin_branch %></td>
+        <td><%= link_to 'Edit', edit_admin_branch_path(admin_branch) %></td>
+        <td><%= link_to 'Destroy', admin_branch, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Admin Branch', new_admin_branch_path %>
+<%= link_to 'Logout', destroy_admin_session_path, method: :delete %>
