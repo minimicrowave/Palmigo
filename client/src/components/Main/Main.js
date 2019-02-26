@@ -1,47 +1,65 @@
 import React, {Component} from "react";
-import { Switch, Route, BrowserRouter, NavLink, Redirect } from "react-router-dom";
 import Axios from 'axios';
+import { Switch, Route, BrowserRouter, NavLink, Redirect } from "react-router-dom";
+import Branches from '../AdminBranches/Branches'
+import Branch from '../AdminBranches/Branch'
 
 class Main extends Component {
     constructor() {
         super();
         this.state = {
-          validation: false,
-          user: ""
-        }
+            validation: false,
+            user: ""
+          };
+        this.logoutHandler = this.logoutHandler.bind(this);
       }
-    
-      componentDidMount() {
-        // check if either user or admin is logged in
-        Axios.get('admin/validate')
-        .then(response => {
-          console.log(response)
-          console.log("Admin is logged in.")
-            this.setState({validation: true, user: 'admin',path:"/admin/dashboard"});
-        })
-        .catch(error => {
-          console.log(error)
       
-          Axios.get('staff/validate')
-          .then(response =>{
-              console.log(response);
-              console.log("Staff is logged in.")
-              this.setState({validation: true, user: 'staff'}) 
+    logoutHandler() {
+        let reactThis = this;
+        let tempLink = this.props.user + 's';
+        Axios.delete(`/${tempLink}/sign_out`)
+        .then(response => {
+            console.log(response)
+            console.log("Logged out, bye!");
+            this.setState({
+                validation: false,
+                user: ""
             })
-            .catch(error => {
-            console.log(error);
-            this.setState({validation: false, user: ''}) 
-            console.log("Not logged in.")
-          })
         })
-      }
+    }
+
+    componentDidMount() {
+        this.setState({
+            validation: this.props.validation,
+            user: this.props.user
+        })
+    }
       
     render() {
-        if (this.state.validation) {
+        if (this.state.validation && this.state.user === "admin") {
         return (
             <div>
-                I'm logged in as {this.state.user}!
+                <p>I'm logged in as admin!</p>
+                <BrowserRouter>
+                        <Switch>
+                            <Route exact path="/" component={Branches} />
+                            <Route path={`/branch/:branch_no`} component={Branch} />
+                        </Switch>
+				</BrowserRouter>
+                <button onClick={this.logoutHandler}>Logout</button>
             </div> )
+        } else if (this.state.validation && this.state.user === "staff") {
+            return (
+                <div>
+                    <p>I'm logged in as staff!</p>
+                    <BrowserRouter>
+                        <Switch>
+                            {/* <Route exact path="/" component={Branch} />
+                            <Route path="/branches" component={Branches} /> */}
+                        </Switch>
+				    </BrowserRouter>
+                    <button onClick={this.logoutHandler}>Logout</button>
+                </div> )
         } else {
             return (
                 <div>
