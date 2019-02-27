@@ -52,8 +52,8 @@ class Branches extends Component {
         return (
             <div>
                 <h1>My Branches</h1>
-                {this.toggleDivHandler()}
                 <button onClick={this.toggleHandler}>{this.state.toggleText}</button>
+                {this.toggleDivHandler()}
                 {eachBranch}
             </div>
         )

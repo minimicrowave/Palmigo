@@ -51,14 +51,9 @@ class AdminBranchesController < ApplicationController
   # PATCH/PUT /admin_branches/1
   # PATCH/PUT /admin_branches/1.json
   def update
-    respond_to do |format|
       if @admin_branch.update(admin_branch_params)
         render json: {success: true}
-      else
-        format.html { render :edit }
-        format.json { render json: @admin_branch.errors, status: :unprocessable_entity }
       end
-    end
   end
 
   # DELETE /admin_branches/1

@@ -16,6 +16,7 @@ class Main extends Component {
         this.getBranchesHandler = this.getBranchesHandler.bind(this);
         this.newBranchHandler = this.newBranchHandler.bind(this);
         this.deleteBranchHandler = this.deleteBranchHandler.bind(this);
+        this.updateBranchHandler = this.updateBranchHandler.bind(this);
       }
       
     logoutHandler() {
@@ -78,6 +79,19 @@ class Main extends Component {
             console.log("Delete branches unsuccessful. \n", error)
         });
     }
+
+    updateBranchHandler(id, obj) {
+        let url = '/admin_branches/' + id;
+        Axios.patch(url, obj)
+        .then(response => {
+            console.log(response)
+            this.getBranchesHandler();
+        })
+        .catch(error => {
+        console.log("Data update unsuccessful. \n", error)
+        });
+    }
+
     
     render() {
         if (this.state.validation && this.state.user === "admin") {
@@ -87,7 +101,7 @@ class Main extends Component {
                 <BrowserRouter>
                         <Switch>
                             <Route exact path="/" render={props => <Branches {...props} allAdminBranches={this.state.allAdminBranches} newBranchHandler={this.newBranchHandler} deleteBranchHandler={this.deleteBranchHandler}/>} />
-                            <Route path={`/branch/:branch_no`} render={props => <Branch {...props} allAdminBranches={this.state.allAdminBranches}/>} />
+                            <Route path={`/branch/:branch_no`} render={props => <Branch {...props} allAdminBranches={this.state.allAdminBranches} updateBranchHandler={this.updateBranchHandler}/>} />
                         </Switch>
 				</BrowserRouter>
                 <button onClick={this.logoutHandler}>Logout</button>
