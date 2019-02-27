@@ -9,9 +9,12 @@ class Main extends Component {
         super();
         this.state = {
             validation: props.validation,
-            user: props.user
+            user: props.user,
+            allAdminBranches: []
           };
         this.logoutHandler = this.logoutHandler.bind(this);
+        this.getBranchesHandler = this.getBranchesHandler.bind(this);
+        this.newBranchHandler = this.newBranchHandler.bind(this);
       }
       
     logoutHandler() {
@@ -29,20 +32,50 @@ class Main extends Component {
         this.setState(nextProps);
     }
 
+    
     componentWillMount() {
         this.props.update();
+        this.getBranchesHandler();
     }
-      
+
+    // get all admin branches
+    getBranchesHandler() {
+        Axios.get('/admin_branches')
+        .then(response => {
+          console.log(response)
+          this.setState({allAdminBranches: response.data})
+        })
+        .catch(error => {
+          console.log("Data retrieval unsuccessul. \n", error)
+        })
+    }
+    
+    // create new admin branches
+    newBranchHandler(name, contact, location) {
+        Axios.post('/admin_branches', {
+            name: name,
+            contact: contact,
+            location: location
+        })
+        .then(response => {
+        console.log(response)
+        this.getBranchesHandler();
+
+        })
+        .catch(error => {
+        console.log("Data retrieval unsuccessul. \n", error)
+        });
+    }
+    
     render() {
-        
         if (this.state.validation && this.state.user === "admin") {
         return (
             <div>
                 <p>I'm logged in as admin!</p>
                 <BrowserRouter>
                         <Switch>
-                            <Route exact path="/" component={Branches} />
-                            <Route path={`/branch/:branch_no`} component={Branch} />
+                            <Route exact path="/" render={props => <Branches {...props} allAdminBranches={this.state.allAdminBranches} newBranchHandler={this.newBranchHandler}/>} />
+                            <Route path={`/branch/:branch_no`} render={props => <Branch {...props} allAdminBranches={this.state.allAdminBranches}/>} />
                         </Switch>
 				</BrowserRouter>
                 <button onClick={this.logoutHandler}>Logout</button>

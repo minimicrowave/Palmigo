@@ -6,7 +6,7 @@ class Branches extends Component {
     constructor() {
         super();
         this.state = {
-            dataLoaded: false,
+            allAdminBranches: [],
             data: [],
             toggle: false,
             toggleText: 'New Branch',
@@ -15,17 +15,6 @@ class Branches extends Component {
         this.toggleDivHandler = this.toggleDivHandler.bind(this);
     }
 
-    componentDidMount(){
-        Axios.get('/admin_branches')
-        .then(response => {
-          console.log(response)
-          this.setState({dataLoaded: true, data: response.data})
-        })
-        .catch(error => {
-          console.log("Data retrieval unsuccessul. \n", error)
-          this.setState({dataLoaded: false})
-        })
-    }
 
     toggleHandler() {
         if (this.state.toggleText === 'New Branch') {
@@ -38,7 +27,7 @@ class Branches extends Component {
     toggleDivHandler(){
         if (this.state.toggle) {
             return (
-                <NewBranch/>
+                <NewBranch newBranchHandler={this.props.newBranchHandler} toggleHandler={this.toggleHandler}/>
             )
         } else {
             return (<div></div>)
@@ -46,15 +35,15 @@ class Branches extends Component {
     }
 
     render(){
-        let branches = [...this.state.data];
+        let branches = [...this.props.allAdminBranches];
         branches = branches.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));        
         let eachBranch = branches.map((branch, index) => {
             return (
-                <div>
+                <div>#{index+1}
                     <h2>{branch.name}</h2>
                     <p>{branch.contact}</p>
                     <p>{branch.location}</p>
-                    <NavLink to={{pathname: `branch/${index+1}`, state: {data: branch}}}>Edit</NavLink>
+                    <NavLink to={{pathname: `branch/${branch.id}`}}>Edit</NavLink>
                     <p>Delete</p>
                 </div>
             )
@@ -80,7 +69,7 @@ class NewBranch extends Component {
             branchName: '',
             contactNo: '',
             location: '', 
-            error: ''
+            error: '',
         }
     } 
 
@@ -88,20 +77,9 @@ class NewBranch extends Component {
         if (!this.state.branchName || !this.state.contactNo || !this.state.location){
             this.setState({error: 'Please do not leave any fields blank.'})
         } else {
-            Axios.post('/admin_branches', {
-                name: this.state.branchName,
-                contact: this.state.contactNo,
-                location: this.state.location
-            })
-            .then(response => {
-            console.log(response)
-            // this.setState({dataLoaded: true, data: response.data})
-            })
-            .catch(error => {
-            console.log("Data retrieval unsuccessul. \n", error)
-            this.setState({dataLoaded: false})
-            })
-            }
+           this.props.newBranchHandler(this.state.branchName, this.state.contactNo, this.state.location);
+           this.props.toggleHandler();
+        }
     }
 
     changeHandler(event){
@@ -109,7 +87,6 @@ class NewBranch extends Component {
         let name = event.target.name;
 
         this.setState({[name]: value, error: ""});
-        console.log(this.state)
     }
 
     render() {
