@@ -53,8 +53,7 @@ class AdminBranchesController < ApplicationController
   def update
     respond_to do |format|
       if @admin_branch.update(admin_branch_params)
-        format.html { redirect_to @admin_branch, notice: 'Admin branch was successfully updated.' }
-        format.json { render :show, status: :ok, location: @admin_branch }
+        render json: {success: true}
       else
         format.html { render :edit }
         format.json { render json: @admin_branch.errors, status: :unprocessable_entity }
@@ -66,10 +65,7 @@ class AdminBranchesController < ApplicationController
   # DELETE /admin_branches/1.json
   def destroy
     @admin_branch.destroy
-    respond_to do |format|
-      format.html { redirect_to admin_branches_url, notice: 'Admin branch was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {success: true}
   end
 
   private

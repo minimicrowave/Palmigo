@@ -15,6 +15,7 @@ class Main extends Component {
         this.logoutHandler = this.logoutHandler.bind(this);
         this.getBranchesHandler = this.getBranchesHandler.bind(this);
         this.newBranchHandler = this.newBranchHandler.bind(this);
+        this.deleteBranchHandler = this.deleteBranchHandler.bind(this);
       }
       
     logoutHandler() {
@@ -60,10 +61,21 @@ class Main extends Component {
         .then(response => {
         console.log(response)
         this.getBranchesHandler();
-
         })
         .catch(error => {
         console.log("Data retrieval unsuccessul. \n", error)
+        });
+    }
+
+    deleteBranchHandler(event){
+        let url = '/admin_branches/' + event.target.dataset.id;
+        Axios.delete(url)
+        .then(response => {
+            console.log(response);
+            this.getBranchesHandler();
+        })
+        .catch(error => {
+            console.log("Delete branches unsuccessful. \n", error)
         });
     }
     
@@ -74,7 +86,7 @@ class Main extends Component {
                 <p>I'm logged in as admin!</p>
                 <BrowserRouter>
                         <Switch>
-                            <Route exact path="/" render={props => <Branches {...props} allAdminBranches={this.state.allAdminBranches} newBranchHandler={this.newBranchHandler}/>} />
+                            <Route exact path="/" render={props => <Branches {...props} allAdminBranches={this.state.allAdminBranches} newBranchHandler={this.newBranchHandler} deleteBranchHandler={this.deleteBranchHandler}/>} />
                             <Route path={`/branch/:branch_no`} render={props => <Branch {...props} allAdminBranches={this.state.allAdminBranches}/>} />
                         </Switch>
 				</BrowserRouter>

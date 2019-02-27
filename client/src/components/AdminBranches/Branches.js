@@ -43,8 +43,9 @@ class Branches extends Component {
                     <h2>{branch.name}</h2>
                     <p>{branch.contact}</p>
                     <p>{branch.location}</p>
+                    <p>Branch ID: {branch.id}</p>
                     <NavLink to={{pathname: `branch/${branch.id}`}}>Edit</NavLink>
-                    <p>Delete</p>
+                    <p data-id={branch.id} onClick={event => this.props.deleteBranchHandler(event)}>Delete</p>
                 </div>
             )
         })
