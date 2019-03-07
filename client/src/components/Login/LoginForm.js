@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import { NavLink, Redirect} from "react-router-dom";
+import {Button, CustomCalendaButton, Checkbox, Form, Input, Radio, Select, TextArear} from 'semantic-ui-react';
 
 class LoginForm extends Component {
     constructor(){
@@ -44,8 +45,10 @@ class LoginForm extends Component {
     changeHandler(event){
         let value = event.target.value;
         let name = event.target.name;
+        // console.log({val}, event, value, name)
 
         this.setState({[name]: value, error: ""});
+        console.log(this.state)
     }
 
     enterHandler(event){
@@ -55,6 +58,8 @@ class LoginForm extends Component {
     }
 
     render(){
+        // let state = {};
+        // const { value } = this.state;
         if (this.state.doRedirect) {
             return (<Redirect to="/"/>)
         } else {
@@ -71,6 +76,33 @@ class LoginForm extends Component {
                         <button onClick={this.clickHandler}>Submit</button>
                     
                     <h4><NavLink to='/'>Back</NavLink></h4>
+                    {/* <Form className="landingpagecentre">
+        <Form.Group widths='equal'>
+          <Form.Field control={Input} name="email" label='Email' placeholder='Email' onChange={this.changeHandler}/>
+          <Form.Field control={Input} name="password" type="password" label='Password' placeholder='Password' onChange={this.changeHandler}/>
+        </Form.Group>
+        <Form.Group inline>
+          <label>Type</label>
+          <Form.Field
+            control={Radio}
+            name="user"
+            label='Staff'
+            value='staffs'
+            checked={this.state.user  === 'staffs'}
+            onChange={this.changeHandler}
+            />
+          <Form.Field
+            control={Radio}
+            name="user"
+            label='User'
+            value='users'
+            checked={this.state.user === 'users'}
+            onChange={this.changeHandler}
+          />
+          
+        </Form.Group>
+        <Form.Field control={Button}>Submit</Form.Field>
+      </Form> */}
                 </div>
             )
         }

@@ -7,5 +7,7 @@ Rails.application.routes.draw do
 
   get '/admin/validate' => 'admin_branches#validate'
   get '/staff/validate' => 'staff_details#validate'
+  get '/staff/companylist' => 'staff_details#companyList'
+  get '/staff/branchlist' => 'staff_details#branchList'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

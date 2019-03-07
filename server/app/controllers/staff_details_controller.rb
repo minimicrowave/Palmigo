@@ -9,8 +9,19 @@ class StaffDetailsController < ApplicationController
     render json: {success: true}
   end
   
+  def companyList
+    @admins = Admin.all
+    render json: @admins
+  end
+
+  def branchList
+    @branches = AdminBranch.all
+    render json: @branches
+  end
+
   def index
-    @staff_details = StaffDetail.where[staff_id == current_staff.id]
+    @staff_details = StaffDetail.where(staff_id: current_staff.id)
+    render json: @staff_details
   end
 
   # GET /staff_details/1
@@ -39,29 +50,24 @@ class StaffDetailsController < ApplicationController
     @staff_detail = StaffDetail.new(staff_detail_params)
     @staff_detail.staff_id = current_staff.id
 
-    respond_to do |format|
+    
+    # respond_to do |format|
       if @staff_detail.save
-        format.html { redirect_to @staff_detail, notice: 'Staff detail was successfully created.' }
-        format.json { render :show, status: :created, location: @staff_detail }
+        puts "SAVED"
+        render json: @staff_detail
       else
-        format.html { render :new }
-        format.json { render json: @staff_detail.errors, status: :unprocessable_entity }
+        puts "DID NOT SAVE"
+        p @staff_detail.errors
       end
-    end
+    # end
   end
 
   # PATCH/PUT /staff_details/1
   # PATCH/PUT /staff_details/1.json
   def update
-    respond_to do |format|
       if @staff_detail.update(staff_detail_params)
-        format.html { redirect_to @staff_detail, notice: 'Staff detail was successfully updated.' }
-        format.json { render :show, status: :ok, location: @staff_detail }
-      else
-        format.html { render :edit }
-        format.json { render json: @staff_detail.errors, status: :unprocessable_entity }
+        render json: {success: true}
       end
-    end
   end
 
   # DELETE /staff_details/1
@@ -82,6 +88,6 @@ class StaffDetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_detail_params
-      params.require(:staff_detail).permit(:name, :contact, :job_title, :employment_type)
+      params.require(:staff_detail).permit(:name, :contact, :job_title, :employment_type, :admin_branches_id)
     end
 end

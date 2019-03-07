@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import { NavLink } from "react-router-dom";
-import Axios from "axios";
 
 class Branches extends Component {
     constructor() {

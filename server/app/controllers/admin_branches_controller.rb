@@ -37,10 +37,10 @@ class AdminBranchesController < ApplicationController
     @admin_branch = AdminBranch.new(admin_branch_params)
     @admin_branch.admin_id = current_admin.id
 
+    p @admin_branch
     respond_to do |format|
       if @admin_branch.save
         format.html { redirect_to @admin_branch, notice: 'Admin branch was successfully created.' }
-        format.json { render :show, status: :created, location: @admin_branch }
       else
         format.html { render :new }
         format.json { render json: @admin_branch.errors, status: :unprocessable_entity }
