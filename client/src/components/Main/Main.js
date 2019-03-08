@@ -7,6 +7,25 @@ import {
   NavLink,
   Redirect
 } from "react-router-dom";
+
+import {
+  Container,
+  Header,
+  Menu,
+  Visibility,
+  Icon,
+  Button,
+  Grid,
+  Image,
+  Modal,
+  List,
+  Divider,
+  Form,
+  Input,
+} from "semantic-ui-react";
+
+// import 'semantic-ui-react';
+
 import Branches from "../AdminBranches/Branches";
 import Branch from "../AdminBranches/Branch";
 import Staff from "../Staff/Staff";
@@ -18,6 +37,7 @@ class Main extends Component {
     this.state = {
       validation: props.validation,
       user: props.user,
+      name: props.name,
       redirect: false,
       staff_details: null,
       staff_information: [],
@@ -79,7 +99,7 @@ class Main extends Component {
         this.setState({ allBranches: response.data });
       })
       .catch(error => {
-        console.log("Admin Branches retrieval unsuccessul. \n", error);
+        console.log("Admin Branches list retrieval unsuccessul. \n", error);
       });
   }
 
@@ -91,7 +111,7 @@ class Main extends Component {
         this.setState({ allAdminBranches: response.data });
       })
       .catch(error => {
-        console.log("Data retrieval unsuccessul. \n", error);
+        console.log("Admin's branches retrieval unsuccessul. \n", error);
       });
   }
 
@@ -200,11 +220,27 @@ class Main extends Component {
     }
   }
 
+  
   render() {
+    const buttonProp = {
+      // display: 'inline',
+      position: 'absolute',
+      float: 'right',
+      right: '2%',
+      top: '5%'
+      // left: '-2%',
+      // top: '100px',
+    }
+
     if (this.state.validation && this.state.user === "admin") {
       return (
         <div>
-          <p>I'm logged in as admin!</p>
+          <Button inverted color="standard" size="small" animated onClick={this.logoutHandler} style={buttonProp}>
+            <Button.Content visible>Logout</Button.Content>
+            <Button.Content hidden>
+              <Icon name='sign-out' />
+        </Button.Content>
+        </Button>
           <BrowserRouter>
             <Switch>
               <Route
@@ -213,6 +249,7 @@ class Main extends Component {
                 render={props => (
                   <Branches
                     {...props}
+                    name={this.state.name}
                     allAdminBranches={this.state.allAdminBranches}
                     newBranchHandler={this.newBranchHandler}
                     deleteBranchHandler={this.deleteBranchHandler}
@@ -231,7 +268,6 @@ class Main extends Component {
               />
             </Switch>
           </BrowserRouter>
-          <button onClick={this.logoutHandler}>Logout</button>
         </div>
       );
     } else if (this.state.validation && this.state.user === "staff") {
@@ -246,6 +282,7 @@ class Main extends Component {
                 render={props => (
                   <Staff
                     {...props}
+                    name={this.state.name}
                     staff_details={this.state.staff_details}
                     addStaffDetailsHandler={this.addStaffDetailsHandler}
                     staff_information={this.state.staff_information}

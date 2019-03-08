@@ -3,7 +3,7 @@ class AdminBranchesController < ApplicationController
   before_action :set_admin_branch, only: [:show, :edit, :update, :destroy]
 
   def validate
-    render json: {success: true}
+    render json: {name: current_admin.name }
   end
 
   # GET /admin_branches.json

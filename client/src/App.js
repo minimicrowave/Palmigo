@@ -11,7 +11,8 @@ class App extends Component {
     super();
     this.state = {
       validation: false,
-      user: ""
+      user: '',
+      name: ''
     };
     this.update = this.update.bind(this);
   }
@@ -24,18 +25,18 @@ class App extends Component {
   // check if either user or admin is logged in
     Axios.get('/admin/validate')
     .then(response => {
-      console.log(response)
+      console.log(response.data)
       console.log("Admin is logged in.")
-      this.setState({validation: true, user: 'admin'});
+      this.setState({validation: true, user: 'admin', name: response.data.name});
     })
     .catch(error => {
       console.log(error)
 
       Axios.get('/staff/validate')
       .then(response =>{
-          console.log(response);
+          console.log(response.data);
           console.log("Staff is logged in.")
-          this.setState({validation: true, user: 'staff'}) 
+          this.setState({validation: true, user: 'staff', name: response.data.name}) 
         })
         .catch(error => {
         console.log(error);
@@ -49,12 +50,11 @@ class App extends Component {
     console.log("App", this.state)
     return (
       <div className="App">
-      <h3>Hello, I'm just a placeholder.</h3>
         <BrowserRouter>
 					<Switch>
 						<Route exact path="/login" component={LoginForm} />
 						<Route exact path="/sign_up" component={StaffOrAdminSignUp} />
-						<Route path="/" render={() => <Main validation={this.state.validation}  user={this.state.user} update={this.update} />} />
+						<Route path="/" render={() => <Main validation={this.state.validation}  user={this.state.user} update={this.update} name={this.state.name} />} />
 					</Switch>
 				</BrowserRouter>
       </div>

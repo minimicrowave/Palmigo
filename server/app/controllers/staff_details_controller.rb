@@ -6,7 +6,7 @@ class StaffDetailsController < ApplicationController
   # GET /staff_details.json
 
   def validate
-    render json: {success: true}
+    render json: {name: current_staff.id}
   end
   
   def companyList

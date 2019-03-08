@@ -22,7 +22,6 @@ class Branch extends Component {
     }
     
     submitHandler(id){
-        console.log(this.state)
         if (!this.state.name || !this.state.contact || !this.state.location) {
             this.setState({error: 'Please do not leave any fields blank.'})
         } else {
@@ -37,7 +36,6 @@ class Branch extends Component {
     
     componentDidMount(){
         let branchNo = this.props.match.params.branch_no;
-        console.log(this.props.allAdminBranches)
         let branch = [...this.props.allAdminBranches].find(element => {
             return element.id === parseInt(branchNo);
         })
