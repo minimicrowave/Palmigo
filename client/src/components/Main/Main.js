@@ -9,27 +9,15 @@ import {
 } from "react-router-dom";
 
 import {
-  Container,
-  Header,
-  Menu,
-  Visibility,
   Icon,
   Button,
-  Grid,
-  Image,
-  Modal,
-  List,
-  Divider,
-  Form,
-  Input,
 } from "semantic-ui-react";
-
-// import 'semantic-ui-react';
 
 import Branches from "../AdminBranches/Branches";
 import Branch from "../AdminBranches/Branch";
 import Staff from "../Staff/Staff";
 import StaffDetails from "../Staff/StaffDetails";
+import Shifts from "../Shift/Shifts";
 
 class Main extends Component {
   constructor(props) {
@@ -223,13 +211,10 @@ class Main extends Component {
   
   render() {
     const buttonProp = {
-      // display: 'inline',
       position: 'absolute',
       float: 'right',
       right: '2%',
-      top: '5%'
-      // left: '-2%',
-      // top: '100px',
+      top: '6%'
     }
 
     if (this.state.validation && this.state.user === "admin") {
@@ -263,6 +248,14 @@ class Main extends Component {
                     {...props}
                     allAdminBranches={this.state.allAdminBranches}
                     updateBranchHandler={this.updateBranchHandler}
+                  />
+                )}
+              />
+              <Route
+                path={`/shifts`}
+                render={props => (
+                  <Shifts
+                    {...props}
                   />
                 )}
               />

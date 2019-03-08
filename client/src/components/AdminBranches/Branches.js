@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import Clock from "react-digital-clock";
-import HeaderPhoto from "../../splashpicture.png"
+import HeaderPhoto from "../../splashpicture.png";
 import {
   Container,
   Header,
@@ -15,7 +15,7 @@ import {
   List,
   Divider,
   Form,
-  Input,
+  Input
 } from "semantic-ui-react";
 
 class Branches extends Component {
@@ -25,7 +25,7 @@ class Branches extends Component {
       allAdminBranches: [],
       data: [],
       toggle: false,
-      icon: 'add',
+      icon: "add",
       toggleText: "Add Branch",
       menuFixed: false,
       overlayFixed: false
@@ -42,9 +42,9 @@ class Branches extends Component {
 
   toggleHandler() {
     if (this.state.toggleText === "Add Branch") {
-      this.setState({ toggleText: "Hide", icon: 'angle up', toggle: true });
+      this.setState({ toggleText: "Hide", icon: "angle up", toggle: true });
     } else {
-      this.setState({ toggleText: "Add Branch", icon: 'add', toggle: false });
+      this.setState({ toggleText: "Add Branch", icon: "add", toggle: false });
     }
   }
 
@@ -52,17 +52,36 @@ class Branches extends Component {
     if (this.state.toggle) {
       return (
         <div>
-          <Divider/>
+          <Divider />
           <NewBranch
             newBranchHandler={this.props.newBranchHandler}
             toggleHandler={this.toggleHandler}
           />
-          <Divider/>
+          <Divider />
         </div>
       );
     } else {
       return <div />;
     }
+  }
+
+  date() {
+    let today = new Date();
+    let dd = today.getDate();
+
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    today = mm + "-" + dd + "-" + yyyy;
+
+    return (<p style={{color: 'white'}}>{today}</p>);
   }
 
   stickOverlay = () => this.setState({ overlayFixed: true });
@@ -79,26 +98,32 @@ class Branches extends Component {
       return (
         <Grid.Row>
           <Grid.Column width={4}>
-            <Header as="h3"><Icon name="building outline" size="big"/>{branch.name}</Header>        
-            <p>
-            Branch ID: {branch.id}
-            </p>
+            <Header as="h3">
+              <Icon name="building outline" size="big" />
+              {branch.name}
+            </Header>
+            <p>Branch ID: {branch.id}</p>
             <List>
-    <List.Item icon='call' content={branch.contact} />
-    <List.Item icon='map pin' content={branch.location} />
-  </List>
+              <List.Item icon="call" content={branch.contact} />
+              <List.Item icon="map pin" content={branch.location} />
+            </List>
             <Button
               circular
               header
               as={NavLink}
               to={{ pathname: `branch/${branch.id}` }}
-              size='small'
+              size="small"
               color="olive"
               icon="edit outline"
             />
             <Modal
               trigger={
-                <Button circular size='small' color="red" icon="trash alternate outline"/>
+                <Button
+                  circular
+                  size="small"
+                  color="red"
+                  icon="trash alternate outline"
+                />
               }
               basic
               size="small"
@@ -188,7 +213,6 @@ class Branches extends Component {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-
           </Grid.Column>
         </Grid.Row>
       );
@@ -235,17 +259,17 @@ class Branches extends Component {
     };
 
     const HeaderPhotoStyle = {
-      width: '100%'
-    }
+      width: "100%"
+    };
 
     const divBody = {
-      margin: '0 2%'
-    }
+      margin: "0 2%"
+    };
 
     return (
       <div>
         <div>
-          <img src={HeaderPhoto} style={HeaderPhotoStyle}/>
+          <img src={HeaderPhoto} style={HeaderPhotoStyle} />
         </div>
 
         <Visibility
@@ -263,9 +287,14 @@ class Branches extends Component {
                 <Icon name="hand point up outline" size="large" />
               </Menu.Item>
               <Menu.Item header>Welcome, {this.props.name}</Menu.Item>
-              <Menu.Item as="a" onClick={this.addBranchButtonHandler}>Add Branch</Menu.Item>
-              <Menu.Item as="a">Articles</Menu.Item>
+              <Menu.Item as="a" onClick={this.addBranchButtonHandler}>
+                Add Branch
+              </Menu.Item>
+              <Menu.Item eader
+              as={NavLink}
+              to={{ pathname: `shifts` }}>All Shifts</Menu.Item>
               <Menu.Menu position="right">
+                <Menu.Item>{this.date()}</Menu.Item>
                 <Menu.Item>
                   <Clock hour12={false} />
                 </Menu.Item>
@@ -275,8 +304,15 @@ class Branches extends Component {
         </Visibility>
 
         <div style={divBody}>
-          <h1>My Branches</h1>
-          <Button color="teal" size="small" onClick={this.toggleHandler} content={this.state.toggleText} icon={this.state.icon} labelPosition='right' />
+          <h1>Schedule</h1>
+          <Button
+            color="teal"
+            size="small"
+            onClick={this.toggleHandler}
+            content={this.state.toggleText}
+            icon={this.state.icon}
+            labelPosition="right"
+          />
           {this.toggleDivHandler()}
           <Grid celled="internally">{eachBranch}</Grid>
         </div>
@@ -325,35 +361,44 @@ class NewBranch extends Component {
   render() {
     return (
       <div>
+        <Form size="small">
+          <Form.Group widths="equal">
+            <Form.Field inline>
+              <label>Branch Name</label>
+              <Input
+                name="branchName"
+                onChange={this.changeHandler}
+                placeholder="Myrtle Mini"
+              />
+            </Form.Field>
 
-<Form size="small">
-    <Form.Group widths='equal'>
-      <Form.Field inline>
-        <label>Branch Name</label>
-        <Input name="branchName" onChange={this.changeHandler} placeholder='Myrtle Mini' />
-      </Form.Field>
+            <Form.Field inline>
+              <label>Contact No.</label>
+              <Input
+                name="contactNo"
+                type="number"
+                onChange={this.changeHandler}
+                placeholder="+65 6123 4567"
+              />
+            </Form.Field>
 
-      <Form.Field inline>
-        <label>Contact No.</label>
-        <Input name="contactNo" type="number" onChange={this.changeHandler} placeholder='+65 6123 4567' />
-      </Form.Field>
+            <Form.Field inline>
+              <label>Branch Name</label>
+              <Input
+                name="location"
+                onChange={this.changeHandler}
+                placeholder="Grand Lane 5"
+              />
+            </Form.Field>
 
-      <Form.Field inline>
-        <label>Branch Name</label>
-        <Input name="location" onChange={this.changeHandler} placeholder='Grand Lane 5' />
-      </Form.Field>
-    
-     
-      <Form.Field
-        control={Button}
-        content='Add Branch'
-        onClick={this.clickHandler}
-      />
-    </Form.Group>
-    <Form.Field>{this.state.error}</Form.Field>
-  
-  </Form>
-        
+            <Form.Field
+              control={Button}
+              content="Add Branch"
+              onClick={this.clickHandler}
+            />
+          </Form.Group>
+          <Form.Field>{this.state.error}</Form.Field>
+        </Form>
       </div>
     );
   }
