@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink, Redirect } from "react-router-dom";
-import { Table } from "semantic-ui-react";
+import { Table, Button} from "semantic-ui-react";
 
 class FilteredShift extends Component {
   render() {
@@ -14,12 +14,19 @@ class FilteredShift extends Component {
         let branch = allAdminBranches.filter(branch => {
           return branch.id === shift.admin_branch_id;
         });
-        console.log(branch);
         return (
           <Table.Row>
             <Table.Cell>{branch[0].name}</Table.Cell>
             <Table.Cell>{shift.time}</Table.Cell>
-            <Table.Cell>Edit</Table.Cell>
+            <Table.Cell><Button
+              circular
+              header
+              as={NavLink}
+              to={{ pathname: `shifts/${shift.id}` }}
+              size="small"
+              color="olive"
+              icon="edit outline"
+            /></Table.Cell>
           </Table.Row>
         );
       });

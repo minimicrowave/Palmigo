@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { NavLink, Redirect } from "react-router-dom";
+import { NavLink, BrowserRouter, Route, Switch } from "react-router-dom";
 import { Button, Icon, Divider, Form, Input, Select, Header } from "semantic-ui-react";
 import Calendar from "react-calendar";
 import Axios from "axios";
 import NavBar from "../NavBar/NavBar";
-import FilteredShift from "../Shift/FilteredShift"
+import FilteredShift from "./FilteredShift"
+import ShiftStaff from "./ShiftStaff";
 class Shifts extends Component {
   constructor() {
     super();
@@ -131,44 +132,56 @@ class Shifts extends Component {
         <div>
         <NavBar />
         <div style={divBody}>
-          <Button
-            color="grey"
-            size="small"
-            animated
-            as={NavLink}
-            to="/"
-            style={{ marginBottom: "1em" }}
-          >
-            <Button.Content visible>Back</Button.Content>
-            <Button.Content hidden>
-              <Icon name="angle left" />
-            </Button.Content>
-          </Button>
-          <Button
-            color="teal"
-            size="small"
-            onClick={this.toggleHandler}
-            content={this.state.toggleText}
-            icon={this.state.icon}
-            labelPosition="right"
-            style={{ marginBottom: "1em", verticalAlign: "top" }}
-          />
-          <Button
-            color="blue"
-            size="small"
-            onClick={this.toggleCalendarHandler}
-            content="Filter Dates"
-            icon='calendar alternate outline'
-            labelPosition="right"
-            style={{ marginBottom: "1em", verticalAlign: "top" }}
-          />
-          {this.toggleDivHandler()}
-          {this.toggleFilterCalendarHandler()}
-          <Header as='h2'>
-            <Icon name='calendar check' />
-            <Header.Content>{this.state.dateLiteral}</Header.Content>
-          </Header>
-          <FilteredShift changedDate={this.state.changedDate} allShifts={this.props.allShifts} allAdminBranches={this.props.allAdminBranches}/>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/shifts" render={()=> {return (
+                 <div>
+                 <Button
+                   color="grey"
+                   size="small"
+                   animated
+                   as={NavLink}
+                   to="/"
+                   style={{ marginBottom: "1em" }}
+                 >
+                   <Button.Content visible>Back</Button.Content>
+                   <Button.Content hidden>
+                     <Icon name="angle left" />
+                   </Button.Content>
+                 </Button>
+                 <Button
+                   color="teal"
+                   size="small"
+                   onClick={this.toggleHandler}
+                   content={this.state.toggleText}
+                   icon={this.state.icon}
+                   labelPosition="right"
+                   style={{ marginBottom: "1em", verticalAlign: "top" }}
+                 />
+                 <Button
+                   color="blue"
+                   size="small"
+                   onClick={this.toggleCalendarHandler}
+                   content="Filter Dates"
+                   icon='calendar alternate outline'
+                   labelPosition="right"
+                   style={{ marginBottom: "1em", verticalAlign: "top" }}
+                 />
+                 {this.toggleDivHandler()}
+                 {this.toggleFilterCalendarHandler()}
+                 <Header as='h2'>
+                   <Icon name='calendar check' />
+                   <Header.Content>{this.state.dateLiteral}</Header.Content>
+                 </Header>
+                 <FilteredShift changedDate={this.state.changedDate} allShifts={this.props.allShifts} allAdminBranches={this.props.allAdminBranches}/>
+                 </div>
+            )
+            }}/>
+
+            <Route path="/shifts/:id" render={props => (<ShiftStaff {...props}/>)}/>
+          </Switch>
+        </BrowserRouter>
+     
         </div>
       </div>
     );
@@ -234,8 +247,7 @@ class NewShift extends Component {
 
       this.setState({ [name]: value, error: "" });
     } else {
-      this.setState({ [option.name]: option.value, error: "" });
-      this.filterTimeHandler();
+      this.setState({ [option.name]: option.value, error: "" }, this.filterTimeHandler);
     }
   }
 
@@ -253,10 +265,13 @@ class NewShift extends Component {
    let timeOption = this.state.timeOption;
 
    allShifts.forEach(shift => {
+     console.log(shift.admin_branch_id, admin_branch_id, shift.date, formatDate);
      if (shift.admin_branch_id === admin_branch_id && shift.date === formatDate) {
-        timeOption = timeOption.filter(obj => {
+       timeOption = timeOption.filter(obj => {
+        console.log(shift, obj)
           return obj.value !== shift.time 
-        })
+        });
+        console.log(timeOption);
     }
    })
 

@@ -216,7 +216,6 @@ class Main extends Component {
   getShiftsHandler() {
     Axios.get(`/shifts`)
     .then(response => {
-      console.log(response.data);
       this.setState({allShifts: response.data})
     })
     .catch(error => {
