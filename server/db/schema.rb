@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 2019_02_25_072804) do
     t.integer "min_staff"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "admin_branches_id"
-    t.index ["admin_branches_id"], name: "index_shifts_on_admin_branches_id"
+    t.bigint "admin_branch_id"
+    t.index ["admin_branch_id"], name: "index_shifts_on_admin_branch_id"
   end
 
   create_table "staff_details", force: :cascade do |t|
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(version: 2019_02_25_072804) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "staff_id"
-    t.bigint "admin_branches_id"
-    t.index ["admin_branches_id"], name: "index_staff_details_on_admin_branches_id"
+    t.bigint "admin_branch_id"
+    t.index ["admin_branch_id"], name: "index_staff_details_on_admin_branch_id"
     t.index ["staff_id"], name: "index_staff_details_on_staff_id"
   end
 
@@ -85,8 +85,8 @@ ActiveRecord::Schema.define(version: 2019_02_25_072804) do
   end
 
   add_foreign_key "admin_branches", "admins"
-  add_foreign_key "shifts", "admin_branches", column: "admin_branches_id"
-  add_foreign_key "staff_details", "admin_branches", column: "admin_branches_id"
+  add_foreign_key "shifts", "admin_branches"
+  add_foreign_key "staff_details", "admin_branches"
   add_foreign_key "staff_details", "staffs"
   add_foreign_key "staff_shifts", "shifts"
   add_foreign_key "staff_shifts", "staff_details", column: "staff_details_id"

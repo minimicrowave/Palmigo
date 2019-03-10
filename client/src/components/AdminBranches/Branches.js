@@ -66,21 +66,7 @@ class Branches extends Component {
   }
 
   date() {
-    let today = new Date();
-    let dd = today.getDate();
-
-    let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-
-    today = mm + "-" + dd + "-" + yyyy;
-
+    let today = this.props.todaysDate;
     return (<p style={{color: 'white'}}>{today}</p>);
   }
 
@@ -90,6 +76,14 @@ class Branches extends Component {
   unStickTopMenu = () => this.setState({ menuFixed: false });
 
   render() {
+
+    let todaysShift = [...this.props.allShifts]
+    todaysShift = todaysShift.filter(shift => {
+        return shift.date === this.props.todaysDate
+    })
+
+    console.log(todaysShift);
+
     let branches = [...this.props.allAdminBranches];
     branches = branches.sort((a, b) =>
       a.name > b.name ? 1 : b.name > a.name ? -1 : 0
@@ -102,7 +96,7 @@ class Branches extends Component {
               <Icon name="building outline" size="big" />
               {branch.name}
             </Header>
-            <p>Branch ID: {branch.id}</p>
+            {/* <p>Branch ID: {branch.id}</p> */}
             <List>
               <List.Item icon="call" content={branch.contact} />
               <List.Item icon="map pin" content={branch.location} />
@@ -198,17 +192,7 @@ class Branches extends Component {
                       </Grid.Column>
                     </Grid.Row>
 
-                    <Grid.Row>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                    </Grid.Row>
+    
                   </Grid>
                 </Grid.Column>
               </Grid.Row>
@@ -218,6 +202,7 @@ class Branches extends Component {
       );
     });
 
+    
     const { menuFixed, overlayFixed } = this.state;
 
     const menuStyle = {
@@ -284,9 +269,9 @@ class Branches extends Component {
           >
             <Container>
               <Menu.Item>
-                <Icon name="hand point up outline" size="large" />
+                <Icon name="home" size="large" />
               </Menu.Item>
-              <Menu.Item header>Welcome, {this.props.name}</Menu.Item>
+              <Menu.Item header>Hello, {this.props.name}</Menu.Item>
               <Menu.Item as="a" onClick={this.addBranchButtonHandler}>
                 Add Branch
               </Menu.Item>
@@ -320,6 +305,12 @@ class Branches extends Component {
     );
   }
 }
+
+
+
+
+
+
 
 class NewBranch extends Component {
   constructor() {

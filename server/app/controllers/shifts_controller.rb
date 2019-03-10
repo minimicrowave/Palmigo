@@ -5,7 +5,14 @@ class ShiftsController < ApplicationController
   # GET /shifts
   # GET /shifts.json
   def index
-    @shifts = Shift.where(shift.admin.id == current_admin.id)
+    # @admin_branches = AdminBranch.where(admin_id: current_admin.id);
+    # @shifts - Shift.where(@admin_branches)
+    # @shift = Shift.@admin_branches
+    @admin_branches = AdminBranch.where(admin_id: current_admin.id)
+    p @admin_branches
+    p @admin_branches.ids
+    @shifts = Shift.where(admin_branch_id: @admin_branches.ids)
+    render json: @shifts
   end
 
   # GET /shifts/1
@@ -23,26 +30,25 @@ class ShiftsController < ApplicationController
   
   # GET /shifts/1/edit
   def edit
-    if @shifts.admin.id != current_admin.id
-      redirect_to shifts_path
-    end
+    @shifts.admin_id != current_admin.id
   end
   
   # POST /shifts
   # POST /shifts.json
   def create
     @shift = Shift.new(shift_params)
-    @shift.admin.id = current_admin.id
-
-    respond_to do |format|
+    
+    # respond_to do |format|
       if @shift.save
-        format.html { redirect_to @shift, notice: 'Shift was successfully created.' }
-        format.json { render :show, status: :created, location: @shift }
+        render json: {success: true}
+        # format.html { redirect_to @shift, notice: 'Shift was successfully created.' }
+        # format.json { render :show, status: :created, location: @shift }
       else
-        format.html { render :new }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
+        p @shift.errors.inspect
+        # format.html { render :new }
+        # format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
-    end
+    # end
   end
 
   # PATCH/PUT /shifts/1
@@ -77,6 +83,6 @@ class ShiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def shift_params
-      params.require(:shift).permit(:date, :time, :min_staff)
+      params.require(:shift).permit(:date, :time, :min_staff, :admin_branch_id)
     end
 end

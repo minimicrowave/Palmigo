@@ -23,6 +23,7 @@ class Main extends Component {
   constructor(props) {
     super();
     this.state = {
+      todaysDate: '',
       validation: props.validation,
       user: props.user,
       name: props.name,
@@ -32,7 +33,8 @@ class Main extends Component {
       allAdminBranches: [],
       allAdmins: [],
       allBranches: [],
-      filteredBranches: []
+      filteredBranches: [],
+      allShifts: []
     };
     this.logoutHandler = this.logoutHandler.bind(this);
     this.getBranchesHandler = this.getBranchesHandler.bind(this);
@@ -45,6 +47,8 @@ class Main extends Component {
     this.allAdminBranchesGetter = this.allAdminBranchesGetter.bind(this);
     this.updateStaffDetailsHandler = this.updateStaffDetailsHandler.bind(this);
     this.adminBranchFilter = this.adminBranchFilter.bind(this);
+    this.getShiftsHandler = this.getShiftsHandler.bind(this);
+    this.todaysDate = this.todaysDate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,6 +62,8 @@ class Main extends Component {
     this.getStaffHandler();
     this.adminGetter();
     this.allAdminBranchesGetter();
+    this.getShiftsHandler();
+    this.todaysDate();
   }
 
   logoutHandler() {
@@ -95,7 +101,6 @@ class Main extends Component {
   getBranchesHandler() {
     Axios.get("/admin_branches")
       .then(response => {
-        console.log(response);
         this.setState({ allAdminBranches: response.data });
       })
       .catch(error => {
@@ -208,6 +213,36 @@ class Main extends Component {
     }
   }
 
+  getShiftsHandler() {
+    Axios.get(`/shifts`)
+    .then(response => {
+      console.log(response.data);
+      this.setState({allShifts: response.data})
+    })
+    .catch(error => {
+      console.log("Shifts retrieval unsuccessul. \n", error);
+    });
+  }
+
+  todaysDate() {
+    let today = new Date();
+    let dd = today.getDate();
+
+    let mm = today.getMonth() + 1;
+    let yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    today = yyyy+ '-' + mm + '-' + dd;
+    console.log('TODAY', today)
+    this.setState({todaysDate: today})
+  }
+
   
   render() {
     const buttonProp = {
@@ -234,28 +269,33 @@ class Main extends Component {
                 render={props => (
                   <Branches
                     {...props}
+                    todaysDate={this.state.todaysDate}
                     name={this.state.name}
                     allAdminBranches={this.state.allAdminBranches}
                     newBranchHandler={this.newBranchHandler}
                     deleteBranchHandler={this.deleteBranchHandler}
-                  />
-                )}
-              />
+                    allShifts={this.state.allShifts}
+                    />
+                    )}
+                    />
               <Route
                 path={`/branch/:branch_no`}
                 render={props => (
                   <Branch
-                    {...props}
-                    allAdminBranches={this.state.allAdminBranches}
-                    updateBranchHandler={this.updateBranchHandler}
+                  {...props}
+                  allAdminBranches={this.state.allAdminBranches}
+                  updateBranchHandler={this.updateBranchHandler}
                   />
-                )}
-              />
+                  )}
+                  />
               <Route
                 path={`/shifts`}
                 render={props => (
                   <Shifts
-                    {...props}
+                  {...props}
+                  allAdminBranches={this.state.allAdminBranches}
+                  allShifts={this.state.allShifts}
+                  getShiftsHandler={this.getShiftsHandler}
                   />
                 )}
               />
