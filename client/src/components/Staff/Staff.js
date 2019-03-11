@@ -17,6 +17,7 @@ class Staff extends Component {
       branch: "",
       company: "",
       allAdmins: [],
+      allAdminOptions: [],
       allBranches: [],
       filteredBranches: '',
       menuFixed: false,
@@ -26,11 +27,17 @@ class Staff extends Component {
     this.clickHandler = this.clickHandler.bind(this);
     this.selectHandler = this.selectHandler.bind(this);
     this.date = this.date.bind(this);
+    this.adminHandler = this.adminHandler.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    var array = [];
+    if (nextProps.allAdmins) {
+      array = this.adminHandler(nextProps.allAdmins)
+    }
     this.setState({
       allAdmins: nextProps.allAdmins,
+      allAdminOptions: array,
       allBranches: nextProps.allBranches,
       filteredBranches: nextProps.filteredBranches
     });
@@ -77,20 +84,21 @@ class Staff extends Component {
     return (<p style={{color: 'white'}}>{today}</p>);
   }
 
+  adminHandler(array) {
+    if (array) {
+      array = array.map(admin => {
+        return ({text: `${admin.name}`, value: `${admin.id}`})
+      });
+      return array;
+    }
+  }
+
   stickOverlay = () => this.setState({ overlayFixed: true });
   stickTopMenu = () => this.setState({ menuFixed: true });
   unStickOverlay = () => this.setState({ overlayFixed: false });
   unStickTopMenu = () => this.setState({ menuFixed: false });
 
   render() {
-    console.log (this.state);
-    var admins;
-    if (this.state.allAdmins) {
-      admins = this.state.allAdmins.map(admin => {
-        return ({text: `${admin.name}`, value: `${admin.id}`})
-      });
-    }
-
     const employmentOptions = [{text:"Part-Time", value:"Part-Time"}, {text:"Full-Time", value: "Full-Time"}]
 
     const divBody = {
@@ -195,7 +203,7 @@ class Staff extends Component {
                 name="company"
                 label="Company"
                 control={Select}
-                options={admins}
+                options={this.state.allAdminOptions}
                 placeholder="Select Employment Type"
                 onChange={(event, option)=>{this.props.adminBranchFilter(option.value)}}
               />
@@ -254,8 +262,6 @@ class Staff extends Component {
           </Menu>
         </Visibility>
         <div style={divBody}>
-        <h3>My name is {this.props.staff_information[0].name}</h3>
-          <NavLink to="/edit">Edit my Information</NavLink>
         </div>
         </div>
       );
