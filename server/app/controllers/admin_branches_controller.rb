@@ -63,6 +63,30 @@ class AdminBranchesController < ApplicationController
     render json: {success: true}
   end
 
+  def staffList
+    @admin_branches = AdminBranch.where(admin_id: current_admin.id)
+    @staff_details = StaffDetail.where(admin_branch_id: @admin_branches)
+    render json: @staff_details
+  end
+
+  def shiftList
+    @admin_branches = AdminBranch.where(admin_id: current_admin.id)
+    @shifts = Shift.where(admin_branch_id: @admin_branches)
+    @staff_shifts = StaffShift.where(shift_id: @shifts) 
+    render json: @staff_shifts
+  end
+
+  def staffShiftCreate
+    @staff_shift = StaffShift.new
+  end
+  
+  def staffShiftPost
+    @staff_shift = StaffShift.new(staff_shift_params)
+    if @staff_shift.save
+      render json: {success: true}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_admin_branch
@@ -72,5 +96,9 @@ class AdminBranchesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_branch_params
       params.require(:admin_branch).permit(:name, :contact, :location)
+    end
+
+    def staff_shift_params
+      params.reqire(:staff_shift).permit(:shift_id, :staff_details_id)
     end
 end

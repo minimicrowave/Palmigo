@@ -35,7 +35,8 @@ class Main extends Component {
       allAdmins: [],
       allBranches: [],
       filteredBranches: [],
-      allShifts: []
+      allShifts: [],
+      allStaff: [],
     };
     this.logoutHandler = this.logoutHandler.bind(this);
     this.getBranchesHandler = this.getBranchesHandler.bind(this);
@@ -50,6 +51,7 @@ class Main extends Component {
     this.adminBranchFilter = this.adminBranchFilter.bind(this);
     this.getShiftsHandler = this.getShiftsHandler.bind(this);
     this.todaysDate = this.todaysDate.bind(this);
+    this.getStaffHandler = this.getStaffHandler.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,6 +67,7 @@ class Main extends Component {
     this.allAdminBranchesGetter();
     this.getShiftsHandler();
     this.todaysDate();
+    this.getStaffHandler();
   }
 
   logoutHandler() {
@@ -224,6 +227,17 @@ class Main extends Component {
     });
   }
 
+  getStaffHandler(){
+    Axios.get(`/admin/stafflist`)
+    .then(response => {
+      console.log('STAFF RETRUEVELLL', response.data)
+      this.setState({allStaff: response.data})
+    })
+    .catch(error => {
+      console.log("Staff retrieval unsuccessul. \n", error);
+    });
+  }
+
   todaysDate() {
     let today = new Date();
     let dd = today.getDate();
@@ -239,7 +253,6 @@ class Main extends Component {
     }
 
     today = yyyy+ '-' + mm + '-' + dd;
-    console.log('TODAY', today)
     this.setState({todaysDate: today})
   }
 
@@ -325,9 +338,15 @@ class Main extends Component {
                   allShifts={this.state.allShifts}
                   getShiftsHandler={this.getShiftsHandler}
                   />
-                )}
+                  )}
+                  />
+              <Route path="/shifts/:id" render={props => (
+                <ShiftStaff 
+                {...props}
+                allShifts={this.state.allShifts}
+                allStaff={this.state.allStaff}
               />
-              <Route path="/shifts/:id" render={props => (<ShiftStaff {...props}/>)}/>
+              )}/>
             </Switch>
           </BrowserRouter>
         </div>

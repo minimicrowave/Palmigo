@@ -14,6 +14,7 @@ class FilteredShift extends Component {
         let branch = allAdminBranches.filter(branch => {
           return branch.id === shift.admin_branch_id;
         });
+
         return (
           <Table.Row>
             <Table.Cell>{branch[0].name}</Table.Cell>
@@ -30,6 +31,7 @@ class FilteredShift extends Component {
           </Table.Row>
         );
       });
+    
 
     return (
       <div>

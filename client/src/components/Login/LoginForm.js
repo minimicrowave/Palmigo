@@ -49,15 +49,12 @@ class LoginForm extends Component {
   }
 
   changeHandler(event, option) {
-    console.log(option);
     if (option.name !== "user") {
       let value = event.target.value;
       let name = event.target.name;
-      // console.log({val}, event, value, name)
 
       this.setState({ [name]: value, error: "" });
     } else {
-      console.log(option);
       this.setState({ user: option.value });
     }
   }
