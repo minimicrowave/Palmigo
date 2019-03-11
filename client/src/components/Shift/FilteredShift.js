@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink, Redirect } from "react-router-dom";
-import { Table, Button} from "semantic-ui-react";
+import { Table, Button } from "semantic-ui-react";
 
 class FilteredShift extends Component {
   render() {
@@ -22,7 +22,7 @@ class FilteredShift extends Component {
               circular
               header
               as={NavLink}
-              to={{ pathname: `shifts/${shift.id}` }}
+              to={{ pathname: `/shifts/${shift.id}` }}
               size="small"
               color="olive"
               icon="edit outline"

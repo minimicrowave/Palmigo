@@ -7,7 +7,6 @@ import {
   NavLink,
   Redirect
 } from "react-router-dom";
-
 import {
   Icon,
   Button,
@@ -18,6 +17,8 @@ import Branch from "../AdminBranches/Branch";
 import Staff from "../Staff/Staff";
 import StaffDetails from "../Staff/StaffDetails";
 import Shifts from "../Shift/Shifts";
+import ShiftStaff from "../Shift/ShiftStaff";
+import backgroundImage from "../../mainpage.png"
 
 class Main extends Component {
   constructor(props) {
@@ -199,7 +200,7 @@ class Main extends Component {
 
   // gets the filtered company branches according to company selection
   adminBranchFilter(event) {
-    let id = parseInt(event.target.value);
+    let id = parseInt(event);
     let allBranches = [...this.state.allBranches];
     if (allBranches.length > 0) {
       let filteredBranches = allBranches
@@ -207,7 +208,7 @@ class Main extends Component {
           return branch.admin_id === id;
         })
         .map(branch => {
-          return <option value={parseInt(branch.id)}>{branch.name}</option>;
+          return ({text: `${branch.name}`, value: `${branch.id}`})
         });
       this.setState({ filteredBranches: filteredBranches });
     }
@@ -244,12 +245,40 @@ class Main extends Component {
 
   
   render() {
+
+    const mainPage = {
+      height: '100vh',
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover'
+    }
+    
+    const margin = {
+      margin: '1vh 0'
+    }
+
     const buttonProp = {
       position: 'absolute',
       float: 'right',
       right: '2%',
       top: '6%'
     }
+    
+    const softBackground = {
+      color: 'white',
+      width: '50vh',
+      height: '50vh',
+      position: 'relative',
+      marginLeft: '22vh',
+      top: '-70vh',
+      // backgroundColor: `rgba(255, 255, 255, 0.5)`,
+    }
+
+    const titleText = {
+      ...margin,
+      fontFamily: 'Major Mono Display',
+      fontSize: '6vh'
+    }
+
 
     if (this.state.validation && this.state.user === "admin") {
       return (
@@ -287,7 +316,7 @@ class Main extends Component {
                   />
                   )}
                   />
-              <Route
+              <Route exact
                 path={`/shifts`}
                 render={props => (
                   <Shifts
@@ -298,6 +327,7 @@ class Main extends Component {
                   />
                 )}
               />
+              <Route path="/shifts/:id" render={props => (<ShiftStaff {...props}/>)}/>
             </Switch>
           </BrowserRouter>
         </div>
@@ -305,7 +335,12 @@ class Main extends Component {
     } else if (this.state.validation && this.state.user === "staff") {
       return (
         <div>
-          <p>I'm logged in as staff!</p>
+          <Button inverted color="standard" size="small" animated onClick={this.logoutHandler} style={buttonProp}>
+            <Button.Content visible>Logout</Button.Content>
+            <Button.Content hidden>
+              <Icon name='sign-out' />
+        </Button.Content>
+        </Button>
           <BrowserRouter>
             <Switch>
               <Route
@@ -340,19 +375,38 @@ class Main extends Component {
               />
             </Switch>
           </BrowserRouter>
-          <button onClick={this.logoutHandler}>Logout</button>
         </div>
       );
     } else {
       return (
-        <div>
-          <h1>Adios Amigo!</h1>
-          <h3>
-            <NavLink to="/login">Login</NavLink>
-          </h3>
-          <h3>
-            <NavLink to="/sign_up">No account? Register here</NavLink>
-          </h3>
+        <div style={{height: '100vh'}}>
+        <div style={mainPage}/>
+          <div style={softBackground}>
+            <h1 style={titleText}>all about convenience</h1>
+            <p>Here at Palmigo, we strive to be your best pal, your amigo, bringing the convenience into your palms. </p>
+        
+              <Button.Group style={margin} size='large'>
+              <Button
+              compact
+              inverted
+              header
+              as={NavLink}
+              to={{ pathname: `/login` }}
+              size="small"
+              color="white"
+            >Login</Button>
+             <Button.Or />
+              <Button
+              compact
+              inverted
+              header
+              as={NavLink}
+              to={{ pathname: `/sign_up` }}
+              size="small"
+              color="white"
+            >Register</Button>
+            </Button.Group>
+          </div>
         </div>
       );
     }

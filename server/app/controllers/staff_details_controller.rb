@@ -88,6 +88,6 @@ class StaffDetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_detail_params
-      params.require(:staff_detail).permit(:name, :contact, :job_title, :employment_type, :admin_branches_id)
+      params.require(:staff_detail).permit(:name, :contact, :job_title, :employment_type, :admin_branch_id)
     end
 end

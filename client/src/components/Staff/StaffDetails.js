@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import { NavLink, Redirect } from "react-router-dom";
+import {Button, Icon} from "semantic-ui-react";
+import NavBar from "../NavBar/NavBar";
 
 class StaffDetails extends Component {
     constructor() {
@@ -58,19 +60,31 @@ class StaffDetails extends Component {
       }
     
       render() {
+        const divBody = {
+          margin: "2em 2em"
+        };
           let allBranches = [...this.state.allBranches];
           let allAdmins = [...this.state.allAdmins];
           
           var companyname;
           var branchname;
+          console.log(allBranches, allAdmins, this.props.staff_information)
         if (allBranches.length > 0 && allAdmins.length > 0) {
-            branchname = allBranches.filter(branch => branch.id === this.props.staff_information[0].admin_branches_id)[0].name
+            branchname = allBranches.filter(branch => branch.id === this.props.staff_information[0].admin_branch_id)[0].name
             companyname = allAdmins.filter(branch => branch.id === this.props.staff_information[0].staff_id)[0].name;
         };
 
         if (this.props.staff_details & this.props.history.action !== "POP") {
           return (
             <div>
+              <NavBar/>
+            <div style={divBody}>
+            <Button color="grey" size="small" animated as={NavLink} to="/shifts">
+            <Button.Content visible>Back</Button.Content>
+            <Button.Content hidden>
+              <Icon name="angle left" />
+            </Button.Content>
+          </Button>
               <h3>Edit Details</h3>
               <p>Name: </p>
               <input name="name" defaultValue={this.state.name} onChange={this.changeHandler} required />
@@ -96,6 +110,7 @@ class StaffDetails extends Component {
               <NavLink to="/">Back</NavLink>
 
               {this.props.redirect? (<Redirect to='/' />): null}
+            </div>
             </div>
           );
     

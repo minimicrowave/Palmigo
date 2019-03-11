@@ -275,9 +275,9 @@ class Branches extends Component {
               <Menu.Item as="a" onClick={this.addBranchButtonHandler}>
                 Add Branch
               </Menu.Item>
-              <Menu.Item eader
+              <Menu.Item header
               as={NavLink}
-              to={{ pathname: `shifts` }}>All Shifts</Menu.Item>
+              to={{ pathname: `/shifts` }}>All Shifts</Menu.Item>
               <Menu.Menu position="right">
                 <Menu.Item>{this.date()}</Menu.Item>
                 <Menu.Item>
