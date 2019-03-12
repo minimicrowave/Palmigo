@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { Form, Button, Input, Select, Header, Icon, Visibility, Container, Menu } from "semantic-ui-react";
+import {
+  Form,
+  Button,
+  Input,
+  Select,
+  Header,
+  Icon,
+  Visibility,
+  Container,
+  Menu,
+  Table
+} from "semantic-ui-react";
 import Clock from "react-digital-clock";
 import HeaderPhoto from "../../splashpicture.png";
 import NavBar from "../NavBar/NavBar";
@@ -19,7 +30,7 @@ class Staff extends Component {
       allAdmins: [],
       allAdminOptions: [],
       allBranches: [],
-      filteredBranches: '',
+      filteredBranches: "",
       menuFixed: false,
       overlayFixed: false
     };
@@ -33,7 +44,7 @@ class Staff extends Component {
   componentWillReceiveProps(nextProps) {
     var array = [];
     if (nextProps.allAdmins) {
-      array = this.adminHandler(nextProps.allAdmins)
+      array = this.adminHandler(nextProps.allAdmins);
     }
     this.setState({
       allAdmins: nextProps.allAdmins,
@@ -43,12 +54,11 @@ class Staff extends Component {
     });
   }
 
-
   clickHandler() {
     if (
       !this.state.name ||
       !this.state.contactNo ||
-      !this.state.jobTitle || 
+      !this.state.jobTitle ||
       !this.state.branch ||
       !this.state.employmentType
     ) {
@@ -80,14 +90,14 @@ class Staff extends Component {
   }
 
   date() {
-    let today = (new Date()).toString().slice(0, 15)
-    return (<p style={{color: 'white'}}>{today}</p>);
+    let today = new Date().toString().slice(0, 15);
+    return <p style={{ color: "white" }}>{today}</p>;
   }
 
   adminHandler(array) {
     if (array) {
       array = array.map(admin => {
-        return ({text: `${admin.name}`, value: `${admin.id}`})
+        return { text: `${admin.name}`, value: `${admin.id}` };
       });
       return array;
     }
@@ -99,7 +109,10 @@ class Staff extends Component {
   unStickTopMenu = () => this.setState({ menuFixed: false });
 
   render() {
-    const employmentOptions = [{text:"Part-Time", value:"Part-Time"}, {text:"Full-Time", value: "Full-Time"}]
+    const employmentOptions = [
+      { text: "Part-Time", value: "Part-Time" },
+      { text: "Full-Time", value: "Full-Time" }
+    ];
 
     const divBody = {
       margin: "2em 2em"
@@ -153,116 +166,154 @@ class Staff extends Component {
     if (!this.props.staff_details) {
       return (
         <div>
-          <NavBar/>
+          <NavBar />
           <div style={divBody}>
+            <Header as="h2">
+              <Icon name="pencil" />
+              <Header.Content>
+                Account Settings
+                <Header.Subheader>
+                  Initialise your details to continue
+                </Header.Subheader>
+              </Header.Content>
+            </Header>
 
-          <Header as='h2'>
-            <Icon name='pencil' />
-            <Header.Content>
-              Account Settings
-              <Header.Subheader>Initialise your details to continue</Header.Subheader>
-            </Header.Content>
-          </Header>
-                
-          <Form>
-          <Form.Group>
-              <Form.Field
-                control={Input}
-                name="name"
-                label="Name"
-                placeholder="Name"
-                onChange={this.changeHandler}
-                required
-              />
-              <Form.Field
-                control={Input}
-                name="contactNo"
-                type="number"
-                label="Contact"
-                placeholder="Contact"
-                onChange={this.changeHandler}
-                required
-              />
-              <Form.Field
-                control={Input}
-                name="jobTitle"
-                label="Job Title"
-                placeholder="Job Title"
-                onChange={this.changeHandler}
-                required
-              />
-              <Form.Field
-                name="employmentType"
-                label="Employment Type"
-                control={Select}
-                options={employmentOptions}
-                placeholder="Select Employment Type"
-                onChange={this.selectHandler}
-              />
-              <Form.Field
-                name="company"
-                label="Company"
-                control={Select}
-                options={this.state.allAdminOptions}
-                placeholder="Select Employment Type"
-                onChange={(event, option)=>{this.props.adminBranchFilter(option.value)}}
-              />
-              <Form.Field
-                name="branch"
-                label="Branch"
-                control={Select}
-                options={this.state.filteredBranches}
-                placeholder="Select Branch"
-                onChange={this.selectHandler}
-              />
-            <Form.Field onClick={this.clickHandler} control={Button} style={{marginTop: '23px'}}>
-              Submit
-            </Form.Field>
-            </Form.Group>
+            <Form>
+              <Form.Group>
+                <Form.Field
+                  control={Input}
+                  name="name"
+                  label="Name"
+                  placeholder="Name"
+                  onChange={this.changeHandler}
+                  required
+                />
+                <Form.Field
+                  control={Input}
+                  name="contactNo"
+                  type="number"
+                  label="Contact"
+                  placeholder="Contact"
+                  onChange={this.changeHandler}
+                  required
+                />
+                <Form.Field
+                  control={Input}
+                  name="jobTitle"
+                  label="Job Title"
+                  placeholder="Job Title"
+                  onChange={this.changeHandler}
+                  required
+                />
+                <Form.Field
+                  name="employmentType"
+                  label="Employment Type"
+                  control={Select}
+                  options={employmentOptions}
+                  placeholder="Select Employment Type"
+                  onChange={this.selectHandler}
+                />
+                <Form.Field
+                  name="company"
+                  label="Company"
+                  control={Select}
+                  options={this.state.allAdminOptions}
+                  placeholder="Select Employment Type"
+                  onChange={(event, option) => {
+                    this.props.adminBranchFilter(option.value);
+                  }}
+                />
+                <Form.Field
+                  name="branch"
+                  label="Branch"
+                  control={Select}
+                  options={this.state.filteredBranches}
+                  placeholder="Select Branch"
+                  onChange={this.selectHandler}
+                />
+                <Form.Field
+                  onClick={this.clickHandler}
+                  control={Button}
+                  style={{ marginTop: "23px" }}
+                >
+                  Submit
+                </Form.Field>
+              </Form.Group>
               <p>{this.state.error}</p>
-
-        </Form>
-        </div>
+            </Form>
+          </div>
         </div>
       );
 
       // if staff details intialised
     } else {
-      return (
-           <div>
-        <div>
-          <img src={HeaderPhoto} style={HeaderPhotoStyle} />
-        </div>
+      let staffshifts = this.props.oneStaffShifts;
+      let shiftlist = this.props.shiftList;
+      
+      let schedule = staffshifts.map(shift => {
+        let scheduleDetails = shiftlist.find(element => {
+          return element.id === shift.shift_id;
+        })
+        return (
+        <Table.Row>
+          <Table.Cell>{scheduleDetails.date}</Table.Cell>
+            <Table.Cell>{scheduleDetails.time}</Table.Cell>
+        </Table.Row>)
+      }) 
 
-        <Visibility
-          onBottomPassed={this.stickTopMenu}
-          onBottomVisible={this.unStickTopMenu}
-          once={false}
-        >
-          <Menu
-            borderless
-            fixed={menuFixed ? "top" : undefined}
-            style={menuFixed ? fixedMenuStyle : menuStyle}
+      return (
+        <div>
+          <div>
+            <img src={HeaderPhoto} style={HeaderPhotoStyle} />
+          </div>
+
+          <Visibility
+            onBottomPassed={this.stickTopMenu}
+            onBottomVisible={this.unStickTopMenu}
+            once={false}
           >
-            <Container>
-              <Menu.Item>
-                <Icon name="home" size="large" />
-              </Menu.Item>
-              <Menu.Item header>Hello, {this.props.staff_information[0].name}</Menu.Item>
-              <Menu.Item header
-              as={NavLink}
-              to={{ pathname: `/edit` }}>Edit Profile</Menu.Item>
-              <Menu.Menu position="right">
-                <Menu.Item>{this.date()}</Menu.Item>
+            <Menu
+              borderless
+              fixed={menuFixed ? "top" : undefined}
+              style={menuFixed ? fixedMenuStyle : menuStyle}
+            >
+              <Container>
                 <Menu.Item>
-                  <Clock hour12={false} />
+                  <Icon name="home" size="large" />
                 </Menu.Item>
-              </Menu.Menu>
-            </Container>
-          </Menu>
-        </Visibility>
-        <div style={divBody}>
-        </div>
+                <Menu.Item header>
+                  Hello, {this.props.staff_information[0].name}
+                </Menu.Item>
+                <Menu.Item header as={NavLink} to={{ pathname: `/edit` }}>
+                  Edit Profile
+                </Menu.Item>
+                <Menu.Menu position="right">
+                  <Menu.Item>{this.date()}</Menu.Item>
+                  <Menu.Item>
+                    <Clock hour12={false} />
+                  </Menu.Item>
+                </Menu.Menu>
+              </Container>
+            </Menu>
+          </Visibility>
+          <div style={divBody}>
+            <Header as="h2">
+              <Icon name="calendar" />
+              <Header.Content>My Schedule</Header.Content>
+            </Header>
+              <Table selectable>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell >Date</Table.HeaderCell>
+                    <Table.HeaderCell >Schedule</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+
+                <Table.Body>
+                    {schedule}
+                </Table.Body>
+              </Table>
+          </div>
         </div>
       );
     }

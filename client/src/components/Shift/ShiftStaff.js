@@ -9,8 +9,14 @@ class ShiftStaff extends Component {
     super();
     this.state = {
       allShifts: props.allShifts,
-      allStaff: props.allStaff
+      allStaff: props.allStaff,
+      reload: false,
     };
+    this.reload = this.reload.bind(this);
+  }
+
+  reload(){
+    this.setState({reload: true});
   }
 
   render() {
@@ -21,7 +27,7 @@ class ShiftStaff extends Component {
     if (
       this.props.allShifts.length > 0 &&
       this.props.allStaff.length > 0 &&
-      this.props.allAdminBranches.length > 0 
+      this.props.allAdminBranches.length > 0
     ) {
       // find current shift;
       let id = parseInt(this.props.match.params.id);
@@ -53,19 +59,18 @@ class ShiftStaff extends Component {
         this.props
       );
 
-      let todayScheduledStaff = this.props.allStaffShift
-        .map(eachShift => {
-          console.log(eachShift.staff_detail_id);
-          return eachShift.staff_detail_id;
-        })
+      let alreadyScheduledStaff = this.props.allStaffShift
         .filter(staff => {
-          return !currentDayShiftsIds.includes(staff);
+          return currentDayShiftsIds.includes(staff.shift_id);
+        })
+        .map(staff => {
+          return staff.staff_detail_id;
         });
 
       let availableStaff = branchStaff.filter(staff => {
-        return !todayScheduledStaff.includes(staff.id);
+        console.log(staff);
+        return !alreadyScheduledStaff.includes(staff.id);
       });
-
 
       let scheduledStaffArr = [];
       let scheduledStaff = this.props.allStaffShift
@@ -89,6 +94,7 @@ class ShiftStaff extends Component {
 
       return (
         <div>
+        {(this.state.reload)? (this.forceUpdate()):null}
           <NavBar />
 
           <div style={divBody}>
@@ -115,7 +121,15 @@ class ShiftStaff extends Component {
               <Segment>Minimum {currentShift.min_staff} staff needed</Segment>
             </Segment.Group>
 
-            <StaffEdit availableStaff={availableStaff} scheduledStaff={scheduledStaff} id={id}/>
+            <StaffEdit
+              availableStaff={availableStaff}
+              scheduledStaff={scheduledStaff}
+              id={id}
+              getShiftsHandler={this.props.getShiftsHandler}
+              getStaffShiftHandler={this.props.getStaffShiftHandler}
+              getBranchesHandler={this.props.getBranchesHandler}
+              reload={this.reload}
+            />
           </div>
         </div>
       );

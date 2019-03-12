@@ -13,5 +13,8 @@ Rails.application.routes.draw do
   
   get '/admin/shiftlist' => 'admin_branches#shiftList'
   patch '/admin/staffshift' => 'staff_shifts#staffShiftPost'
+
+  get '/staff/staffshifts' => 'staff_details#StaffShift'
+  get '/staff/shiftList' => 'staff_details#shiftList'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -169,7 +169,7 @@ class Shifts extends Component {
             <Icon name='calendar check' />
             <Header.Content>{this.state.dateLiteral}</Header.Content>
           </Header>
-          <FilteredShift changedDate={this.state.changedDate} allShifts={this.props.allShifts} allAdminBranches={this.props.allAdminBranches}/>
+          <FilteredShift changedDate={this.state.changedDate} allShifts={this.props.allShifts} allAdminBranches={this.props.allAdminBranches} allStaffShift={this.props.allStaffShift}/>
         </div>
       </div>
     )

@@ -80,6 +80,17 @@ class StaffDetailsController < ApplicationController
     end
   end
 
+  def StaffShift
+    @staff = StaffDetail.where(staff_id: current_staff.id).first
+    @staffshift = StaffShift.where(staff_detail_id: @staff.id)
+    render json: @staffshift
+  end
+
+  def shiftList
+    @shifts = Shift.all
+    render json: @shifts
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_staff_detail

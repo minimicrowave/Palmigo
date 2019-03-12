@@ -37,7 +37,8 @@ class Main extends Component {
       filteredBranches: [],
       allShifts: [],
       allStaff: [],
-      allStaffShif: []
+      allStaffShift: [],
+      oneStaffShifts: []
     };
     this.logoutHandler = this.logoutHandler.bind(this);
     this.getBranchesHandler = this.getBranchesHandler.bind(this);
@@ -54,6 +55,8 @@ class Main extends Component {
     this.todaysDate = this.todaysDate.bind(this);
     this.getStaffListHandler = this.getStaffListHandler.bind(this);
     this.getStaffShiftHandler = this.getStaffShiftHandler.bind(this);
+    this.oneStaffShifts = this.oneStaffShifts.bind(this);
+    this.shiftList = this.shiftList.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,6 +74,8 @@ class Main extends Component {
     this.todaysDate();
     this.getStaffListHandler();
     this.getStaffShiftHandler();
+    this.oneStaffShifts();
+    this.shiftList();
   }
 
   logoutHandler() {
@@ -159,7 +164,6 @@ class Main extends Component {
 
   // get staff details
   getStaffHandler() {
-    console.log('HERE')
     Axios.get("/staff_details")
       .then(response => {
         console.log(response.data)
@@ -249,9 +253,33 @@ class Main extends Component {
       this.setState({allStaffShift: response.data})
     })
     .catch(error => {
-      console.log("Staff shiftretrieval unsuccessul. \n", error);
+      console.log("Staff shift retrieval unsuccessul. \n", error);
     });
   }
+
+  oneStaffShifts(){
+    Axios.get(`/staff/staffshifts`)
+    .then(response => {
+      console.log('personal staff shift', response.data)
+      this.setState({oneStaffShifts: response.data})
+    })
+    .catch(error => {
+      console.log("Staff shift retrieval unsuccessul. \n", error);
+    });
+  }
+  
+  shiftList(){
+    Axios.get(`/staff/shiftList`)
+    .then(response => {
+      console.log('shift list', response.data)
+      this.setState({shiftList: response.data})
+    })
+    .catch(error => {
+      console.log("Staff shift retrieval unsuccessul. \n", error);
+    });
+  }
+
+  
   todaysDate() {
     let today = new Date();
     let dd = today.getDate();
@@ -330,6 +358,8 @@ class Main extends Component {
                     newBranchHandler={this.newBranchHandler}
                     deleteBranchHandler={this.deleteBranchHandler}
                     allShifts={this.state.allShifts}
+                    allStaffShift={this.state.allStaffShift}
+                    allStaff={this.state.allStaff}
                     />
                     )}
                     />
@@ -351,6 +381,7 @@ class Main extends Component {
                   allAdminBranches={this.state.allAdminBranches}
                   allShifts={this.state.allShifts}
                   getShiftsHandler={this.getShiftsHandler}
+                  allStaffShift={this.state.allStaffShift}
                   />
                   )}
                   />
@@ -361,6 +392,9 @@ class Main extends Component {
                 allStaff={this.state.allStaff}
                 allAdminBranches={this.state.allAdminBranches}
                 allStaffShift={this.state.allStaffShift}
+                getShiftsHandler={this.getShiftsHandler}
+                getStaffShiftHandler={this.getStaffShiftHandler}
+                getBranchesHandler={this.getBranchesHandler}
               />
               )}/>
             </Switch>
@@ -392,6 +426,8 @@ class Main extends Component {
                     allBranches={this.state.allBranches}
                     filteredBranches={this.state.filteredBranches}
                     adminBranchFilter={this.adminBranchFilter}
+                    oneStaffShifts={this.state.oneStaffShifts}
+                    shiftList={this.state.shiftList}
                   />
                 )}
               />

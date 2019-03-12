@@ -115,6 +115,12 @@ class StaffEdit extends Component {
               shift_id: this.props.id
             })
           })
+          this.props.getStaffShiftHandler();
+          this.props.getShiftsHandler();
+          this.props.getBranchesHandler();
+          this.props.reload();
+          this.forceUpdate()
+          this.setState({redirect: true})
     } else {
         this.setState({redirect: true})
     }

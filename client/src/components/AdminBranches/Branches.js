@@ -76,19 +76,73 @@ class Branches extends Component {
   unStickTopMenu = () => this.setState({ menuFixed: false });
 
   render() {
+    console.log(this.props);
 
     let todaysShift = [...this.props.allShifts]
     todaysShift = todaysShift.filter(shift => {
         return shift.date === this.props.todaysDate
     })
 
-    console.log(todaysShift);
+    console.log(todaysShift, this.props.allStaffShift);
 
     let branches = [...this.props.allAdminBranches];
     branches = branches.sort((a, b) =>
       a.name > b.name ? 1 : b.name > a.name ? -1 : 0
     );
+
+
     let eachBranch = branches.map((branch, index) => {
+
+    
+
+      let currentBranchShifts = todaysShift.filter(shift=> {
+        return shift.admin_branch_id === branch.id;
+      })
+      console.log(branch, currentBranchShifts);
+
+      if (currentBranchShifts.length > 0) {
+        currentBranchShifts = currentBranchShifts.map(eachShift => {
+          console.log('eachshift', eachShift.id);
+          console.log(this.props.allStaffShift);
+          let staffList = this.props.allStaffShift.filter(eachStaff =>{
+            return eachStaff.shift_id === eachShift.id
+          })
+
+          if (staffList.length > 0) {
+            staffList = staffList.map(oneStaff => {
+              let chosenOne = this.props.allStaff.find(element => {
+                  return element.id === oneStaff.staff_detail_id
+              })
+              return (
+              <Grid.Column>
+                   {chosenOne.name}
+                 </Grid.Column>)
+            })
+          }
+
+
+          // eachShift.id
+          return (
+          <Grid.Row>
+                <Grid.Column width={4}>
+                  {eachShift.time}
+                  <p>Minimum Staff: {eachShift.min_staff}</p>
+                </Grid.Column>
+                <Grid.Column width={12}>
+                  <Grid columns="2" divided>
+                    <Grid.Row>
+                      {staffList}
+                    </Grid.Row>
+
+                  </Grid>
+                </Grid.Column>
+              </Grid.Row>
+          )
+
+        })
+      };
+
+
       return (
         <Grid.Row>
           <Grid.Column width={4}>
@@ -96,7 +150,6 @@ class Branches extends Component {
               <Icon name="building outline" size="big" />
               {branch.name}
             </Header>
-            {/* <p>Branch ID: {branch.id}</p> */}
             <List>
               <List.Item icon="call" content={branch.contact} />
               <List.Item icon="map pin" content={branch.location} />
@@ -142,60 +195,8 @@ class Branches extends Component {
           </Grid.Column>
           <Grid.Column width={12}>
             <Grid celled="internally">
-              <Grid.Row>
-                <Grid.Column width={2}>
-                  <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
-                </Grid.Column>
-                <Grid.Column width={14}>
-                  <Grid columns="three" divided>
-                    <Grid.Row>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                    </Grid.Row>
+            {currentBranchShifts}
 
-                    <Grid.Row>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={2}>
-                  <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
-                </Grid.Column>
-                <Grid.Column width={14}>
-                  <Grid columns="three" divided>
-                    <Grid.Row>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Image src="https://react.semantic-ui.com/images/wireframe/media-paragraph.png" />
-                      </Grid.Column>
-                    </Grid.Row>
-
-    
-                  </Grid>
-                </Grid.Column>
-              </Grid.Row>
             </Grid>
           </Grid.Column>
         </Grid.Row>
@@ -289,7 +290,7 @@ class Branches extends Component {
         </Visibility>
 
         <div style={divBody}>
-          <h1>Schedule</h1>
+          <h1>Today's Schedule</h1>
           <Button
             color="teal"
             size="small"
