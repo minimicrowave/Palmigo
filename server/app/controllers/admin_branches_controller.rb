@@ -76,16 +76,7 @@ class AdminBranchesController < ApplicationController
     render json: @staff_shifts
   end
 
-  def staffShiftCreate
-    @staff_shift = StaffShift.new
-  end
-  
-  def staffShiftPost
-    @staff_shift = StaffShift.new(staff_shift_params)
-    if @staff_shift.save
-      render json: {success: true}
-    end
-  end
+ 
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -99,6 +90,6 @@ class AdminBranchesController < ApplicationController
     end
 
     def staff_shift_params
-      params.reqire(:staff_shift).permit(:shift_id, :staff_details_id)
+      params.require(:staff_shift).permit(:staff_detail_id, :shift_id)
     end
 end

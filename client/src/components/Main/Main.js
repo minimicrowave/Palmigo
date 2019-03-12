@@ -37,6 +37,7 @@ class Main extends Component {
       filteredBranches: [],
       allShifts: [],
       allStaff: [],
+      allStaffShif: []
     };
     this.logoutHandler = this.logoutHandler.bind(this);
     this.getBranchesHandler = this.getBranchesHandler.bind(this);
@@ -51,7 +52,8 @@ class Main extends Component {
     this.adminBranchFilter = this.adminBranchFilter.bind(this);
     this.getShiftsHandler = this.getShiftsHandler.bind(this);
     this.todaysDate = this.todaysDate.bind(this);
-    this.getStaffHandler = this.getStaffHandler.bind(this);
+    this.getStaffListHandler = this.getStaffListHandler.bind(this);
+    this.getStaffShiftHandler = this.getStaffShiftHandler.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,7 +69,8 @@ class Main extends Component {
     this.allAdminBranchesGetter();
     this.getShiftsHandler();
     this.todaysDate();
-    this.getStaffHandler();
+    this.getStaffListHandler();
+    this.getStaffShiftHandler();
   }
 
   logoutHandler() {
@@ -156,8 +159,10 @@ class Main extends Component {
 
   // get staff details
   getStaffHandler() {
+    console.log('HERE')
     Axios.get("/staff_details")
       .then(response => {
+        console.log(response.data)
         if (response.data.length > 0) {
           this.setState({
             staff_details: true,
@@ -227,10 +232,9 @@ class Main extends Component {
     });
   }
 
-  getStaffHandler(){
+  getStaffListHandler(){
     Axios.get(`/admin/stafflist`)
     .then(response => {
-      console.log('STAFF RETRUEVELLL', response.data)
       this.setState({allStaff: response.data})
     })
     .catch(error => {
@@ -238,6 +242,16 @@ class Main extends Component {
     });
   }
 
+  getStaffShiftHandler(){
+    Axios.get(`/admin/shiftlist`)
+    .then(response => {
+      console.log('STAFFSHIFT', response.data)
+      this.setState({allStaffShift: response.data})
+    })
+    .catch(error => {
+      console.log("Staff shiftretrieval unsuccessul. \n", error);
+    });
+  }
   todaysDate() {
     let today = new Date();
     let dd = today.getDate();
@@ -345,6 +359,8 @@ class Main extends Component {
                 {...props}
                 allShifts={this.state.allShifts}
                 allStaff={this.state.allStaff}
+                allAdminBranches={this.state.allAdminBranches}
+                allStaffShift={this.state.allStaffShift}
               />
               )}/>
             </Switch>

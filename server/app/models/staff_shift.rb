@@ -1,4 +1,4 @@
 class StaffShift < ApplicationRecord
   belongs_to :shift
-  belongs_to :staff_details
+  belongs_to :staff_detail
 end
