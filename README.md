@@ -1,6 +1,4 @@
-# Project-2
-
-_Palmigo_
+# Palmigo
 
 - A HR management portal with both administator and staff platform.
 - Manage multiple outlets and their respective shifts and working staff at a glance.
@@ -26,21 +24,21 @@ This is the ERD that is designed to visualise the relations between the differen
 
 ### Admin Platform
 
-#### Overview of shifts added of the current day
+Overview of shifts added of the current day
 ![alt text](./Screenshots/AdminHomepage.png "Admin Homepage with summary with shifts for the day")
 
-#### Overview of shifts and their statuses of selected day
+Overview of shifts and their statuses of selected day
 ![alt text](./Screenshots/AdminShiftPage.png "Admin shift page")
 
-#### Edit selected shift and assign staff that is working at the particulat outlet
+Edit selected shift and assign staff that is working at the particulat outlet
 ![alt text](./Screenshots/AdminEditShiftPage.png "Admin edit shift page")
 
 ### Staff Platform
 
-#### Overview of staff's assigned shifts
+Overview of staff's assigned shifts
 ![alt text](./Screenshots/StaffHomepage.png "Staff Homepage with all their assigned shifts")
 
-#### Edit staff information
+Edit staff information
 ![alt text](./Screenshots/StaffInformation.png "Edit staff information page")
 
 
