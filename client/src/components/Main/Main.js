@@ -404,7 +404,7 @@ class Main extends Component {
     } else if (this.state.validation && this.state.user === "staff") {
       return (
         <div>
-          <Button inverted color="standard" size="small" animated onClick={this.logoutHandler} style={buttonProp}>
+          <Button inverted color="white" size="small" animated onClick={this.logoutHandler} style={buttonProp}>
             <Button.Content visible>Logout</Button.Content>
             <Button.Content hidden>
               <Icon name='sign-out' />
